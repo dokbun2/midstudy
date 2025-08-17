@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midjourney Video Prompt Builder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🎬 미드저니 비디오 프롬프트 빌더</h1>
+                <p class="subtitle">레고 블록처럼 프롬프트를 만들어보세요!</p>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>📚 프리셋 템플릿</h3>
+                    <div class="preset-list">
+                        <button class="preset-btn" data-preset="cinematic">🎥 시네마틱</button>
+                        <button class="preset-btn" data-preset="portrait">👤 인물</button>
+                        <button class="preset-btn" data-preset="landscape">🌄 풍경</button>
+                        <button class="preset-btn" data-preset="action">⚡ 액션</button>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>💾 저장된 프롬프트</h3>
+                    <div id="saved-prompts" class="saved-list">
+                        <!-- Saved prompts will appear here -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>📖 빠른 가이드</h3>
+                    <div class="guide-content">
+                        <p>1. 기본 프롬프트 입력</p>
+                        <p>2. 카메라 움직임 선택</p>
+                        <p>3. 스타일 참조 추가</p>
+                        <p>4. 화면 비율 선택</p>
+                        <p>5. 생성 및 복사!
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div class="builder-container">
+                    <h2>프롬프트 빌더</h2>
+                    
+                    <!-- Two Column Grid Layout -->
+                    <div class="prompt-grid">
+                        <!-- Left Column -->
+                        <div class="grid-column">
+                            <!-- Base Prompt Block -->
+                            <div class="prompt-block base-prompt-block">
+                                <div class="block-header">
+                                    <span class="block-title">기본 프롬프트</span>
+                                </div>
+                                <div class="block-content">
+                                    <input 
+                                        type="text" 
+                                        id="base-prompt" 
+                                        class="text-input"
+                                        placeholder="기본 프롬프트 입력 (예: cute girl in the park)"
+                                        value="cute girl in the park"
+                                    />
+                                </div>
+                            </div>
+
+                            <!-- Style Reference Block -->
+                            <div class="prompt-block style-block">
+                                <div class="block-header">
+                                    <span class="block-title">스타일 참조</span>
+                                </div>
+                                <div class="block-content">
+                                    <input 
+                                        type="text" 
+                                        id="style-ref" 
+                                        class="text-input"
+                                        placeholder="스타일 참조 (예: --sref 1980491416)"
+                                    />
+                                    <div class="helper-text">인기 코드: 1980491416, 2720573889</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Parameters Block -->
+                            <div class="prompt-block params-block">
+                                <div class="block-header">
+                                    <span class="block-title">추가 파라미터</span>
+                                </div>
+                                <div class="block-content">
+                                    <input 
+                                        type="text" 
+                                        id="additional-params" 
+                                        class="text-input"
+                                        placeholder="추가 파라미터 (예: --v 6 --style raw)"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="grid-column">
+                            <!-- Camera Movement Block -->
+                            <div class="prompt-block camera-block">
+                                <div class="block-header">
+                                    <span class="block-title">카메라 움직임</span>
+                                </div>
+                                <div class="block-content">
+                                    <select id="camera-movement" class="select-input">
+                                        <option value="">없음 (None)</option>
+                                        <option value="pan right">오른쪽 팬 (Pan Right) →</option>
+                                        <option value="pan left">← 왼쪽 팬 (Pan Left)</option>
+                                        <option value="zoom in">줌 인 (Zoom In)</option>
+                                        <option value="zoom out">줌 아웃 (Zoom Out)</option>
+                                        <option value="tilt up">위로 틸트 (Tilt Up)</option>
+                                        <option value="tilt down">아래로 틸트 (Tilt Down)</option>
+                                        <option value="rotate clockwise">시계방향 회전 (Rotate Clockwise)</option>
+                                        <option value="rotate counter-clockwise">반시계방향 회전 (Rotate Counter)</option>
+                                        <option value="dolly in">돌리 인 (Dolly In)</option>
+                                        <option value="dolly out">돌리 아웃 (Dolly Out)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Aspect Ratio Block -->
+                            <div class="prompt-block ratio-block">
+                                <div class="block-header">
+                                    <span class="block-title">화면 비율</span>
+                                </div>
+                                <div class="block-content">
+                                    <select id="aspect-ratio" class="select-input">
+                                        <option value="--ar 9:16">9:16 (모바일/틱톡)</option>
+                                        <option value="--ar 16:9">16:9 (와이드스크린)</option>
+                                        <option value="--ar 1:1">1:1 (정사각형)</option>
+                                        <option value="--ar 4:3">4:3 (표준)</option>
+                                        <option value="--ar 3:2">3:2 (클래식)</option>
+                                        <option value="--ar 21:9">21:9 (울트라와이드)</option>
+                                        <option value="--ar 2:3">2:3 (세로)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons outside grid -->
+                    <div class="action-buttons">
+                        <button id="generate-btn" class="generate-btn">
+                            <span class="btn-icon">✨</span>
+                            생성
+                        </button>
+                        <button id="clear-btn" class="clear-btn">
+                            <span class="btn-icon">🗑️</span>
+                            지우기
+                        </button>
+                        <button id="save-btn" class="save-btn">
+                            <span class="btn-icon">💾</span>
+                            저장
+                        </button>
+                    </div>
+
+                    <!-- Output Display -->
+                    <div class="output-container">
+                        <div class="output-header">
+                            <h3>📋 생성된 프롬프트</h3>
+                            <button id="copy-btn" class="copy-btn" disabled>
+                                <span class="copy-icon">📋</span>
+                                <span class="copy-text">클립보드에 복사</span>
+                            </button>
+                        </div>
+                        <div id="output-display" class="output-display">
+                            <p class="placeholder-text">생성된 프롬프트가 여기에 표시됩니다...</p>
+                        </div>
+                        <div class="prompt-preview" id="prompt-preview">
+                            <!-- Visual preview of prompt components -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>© 2024 미드저니 비디오 프롬프트 빌더 | 크리에이터를 위해 제작됨 💜</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">가이드</a>
+                    <a href="#" class="footer-link">예시</a>
+                    <a href="#" class="footer-link">소개</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
