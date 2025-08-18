@@ -310,24 +310,87 @@ body {
     width: 100%;
 }
 
-/* Three Column Grid Layout */
+/* Three Column Grid Layout - Modified for custom widths */
 .prompt-grid-three {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.6fr 1.2fr 1.2fr;
+    grid-template-rows: auto auto;
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
     width: 100%;
 }
 
+/* Base Prompt Block */
+.prompt-grid-three .base-prompt-block {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+/* Additional Prompt Block */
+.prompt-grid-three .additional-prompt-block {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+/* Camera Movement Block */
+.prompt-grid-three .camera-block {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+/* Style Reference Block - 80% of original expanded width */
+.prompt-grid-three .style-block {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+/* Aspect Ratio Block - Equal size */
+.prompt-grid-three .ratio-block {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+/* Additional Parameters Block - Equal size */
+.prompt-grid-three .params-block {
+    grid-column: 3;
+    grid-row: 2;
+}
+
 @media (max-width: 1200px) {
     .prompt-grid-three {
         grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+    }
+    
+    /* Reset custom positioning on smaller screens */
+    .prompt-grid-three .style-block {
+        grid-column: auto;
+        grid-row: auto;
+    }
+    
+    .prompt-grid-three .ratio-block,
+    .prompt-grid-three .params-block {
+        grid-column: auto;
+        grid-row: auto;
+        width: 100%;
+        justify-self: stretch;
     }
 }
 
 @media (max-width: 768px) {
     .prompt-grid-three {
         grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    
+    /* Reset all custom positioning on mobile */
+    .prompt-grid-three .style-block,
+    .prompt-grid-three .ratio-block,
+    .prompt-grid-three .params-block {
+        grid-column: auto;
+        grid-row: auto;
+        width: 100%;
+        justify-self: stretch;
     }
 }
 
@@ -814,6 +877,13 @@ body {
     flex: 1;
 }
 
+/* Equal width for style reference text and dropdown */
+.style-block .input-with-dropdown .text-input,
+.style-block .input-with-dropdown .prompt-dropdown {
+    flex: 1;
+    min-width: 0;
+}
+
 .prompt-dropdown {
     padding: var(--spacing-md);
     border: 1px solid var(--border-color);
@@ -824,6 +894,11 @@ body {
     color: var(--netflix-text);
     cursor: pointer;
     min-width: 150px;
+}
+
+/* Remove min-width for style dropdown to allow equal sizing */
+.style-block .prompt-dropdown {
+    min-width: 0;
 }
 
 .prompt-dropdown:focus {
