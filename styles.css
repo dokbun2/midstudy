@@ -764,6 +764,47 @@ body {
     }
 }
 
+/* Input with Dropdown Styles */
+.input-with-dropdown {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: stretch;
+}
+
+.input-with-dropdown .text-input {
+    flex: 1;
+}
+
+.prompt-dropdown {
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: var(--netflix-black);
+    color: var(--netflix-text);
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.prompt-dropdown:focus {
+    outline: none;
+    border-color: var(--netflix-red);
+    background: var(--netflix-gray);
+    box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2);
+}
+
+.prompt-dropdown:hover {
+    background: var(--netflix-gray);
+    border-color: var(--netflix-red);
+}
+
+.prompt-dropdown option {
+    background: var(--netflix-black);
+    color: var(--netflix-text);
+    padding: var(--spacing-sm);
+}
+
 /* Print Styles */
 @media print {
     body {

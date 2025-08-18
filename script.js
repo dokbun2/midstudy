@@ -2,6 +2,7 @@
 
 // DOM Elements
 const basePromptInput = document.getElementById('base-prompt');
+const basePromptDropdown = document.getElementById('base-prompt-dropdown');
 const additionalPromptInput = document.getElementById('additional-prompt');
 const cameraMovementSelect = document.getElementById('camera-movement');
 const styleRefInput = document.getElementById('style-ref');
@@ -62,6 +63,25 @@ function attachEventListeners() {
     clearBtn.addEventListener('click', clearAll);
     saveBtn.addEventListener('click', savePrompt);
     copyBtn.addEventListener('click', copyToClipboard);
+    
+    // Base prompt dropdown handler
+    basePromptDropdown.addEventListener('change', (e) => {
+        const selectedValue = e.target.value;
+        if (selectedValue) {
+            const currentValue = basePromptInput.value.trim();
+            if (currentValue) {
+                // Add to existing value with comma
+                basePromptInput.value = `${currentValue}, ${selectedValue}`;
+            } else {
+                // Set as new value
+                basePromptInput.value = selectedValue;
+            }
+            // Reset dropdown to default option
+            basePromptDropdown.value = '';
+            // Trigger preview update
+            updatePreview();
+        }
+    });
     
     // Preset buttons
     document.querySelectorAll('.preset-btn').forEach(btn => {
@@ -184,6 +204,7 @@ function updatePreview() {
 // Clear All Fields
 function clearAll() {
     basePromptInput.value = '';
+    basePromptDropdown.value = '';
     additionalPromptInput.value = '';
     cameraMovementSelect.value = '';
     styleRefInput.value = '';

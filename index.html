@@ -63,13 +63,29 @@
                                     <span class="block-title">기본 프롬프트</span>
                                 </div>
                                 <div class="block-content">
-                                    <input 
-                                        type="text" 
-                                        id="base-prompt" 
-                                        class="text-input"
-                                        placeholder="기본 프롬프트 입력 (예: cute girl in the park)"
-                                        value="cute girl in the park"
-                                    />
+                                    <div class="input-with-dropdown">
+                                        <input 
+                                            type="text" 
+                                            id="base-prompt" 
+                                            class="text-input"
+                                            placeholder="기본 프롬프트 입력 (예: cute girl in the park)"
+                                            value="cute girl in the park"
+                                        />
+                                        <select id="base-prompt-dropdown" class="prompt-dropdown">
+                                            <option value="">옵션 추가...</option>
+                                            <option value="cinematic shot">시네마틱 샷</option>
+                                            <option value="close-up portrait">클로즈업 인물</option>
+                                            <option value="wide angle shot">와이드 앵글 샷</option>
+                                            <option value="aerial view">공중 뷰</option>
+                                            <option value="dramatic lighting">드라마틱 조명</option>
+                                            <option value="golden hour">골든 아워</option>
+                                            <option value="high contrast">고대비</option>
+                                            <option value="soft focus">소프트 포커스</option>
+                                            <option value="depth of field">피사계 심도</option>
+                                            <option value="motion blur">모션 블러</option>
+                                        </select>
+                                    </div>
+                                    <div class="helper-text">텍스트 입력 또는 드롭다운에서 옵션 선택</div>
                                 </div>
                             </div>
 
