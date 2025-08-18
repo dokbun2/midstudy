@@ -361,7 +361,8 @@ body {
 
 /* Form Elements - Netflix Style */
 .text-input,
-.select-input {
+.select-input,
+.textarea-input {
     width: 100%;
     padding: var(--spacing-md);
     border: 1px solid var(--border-color);
@@ -372,8 +373,15 @@ body {
     color: var(--netflix-text);
 }
 
+.textarea-input {
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+}
+
 .text-input:focus,
-.select-input:focus {
+.select-input:focus,
+.textarea-input:focus {
     outline: none;
     border-color: var(--netflix-red);
     background: var(--netflix-gray);
@@ -560,6 +568,10 @@ body {
 
 .preview-block.base {
     background: var(--netflix-red);
+}
+
+.preview-block.additional {
+    background: #8B008B;
 }
 
 .preview-block.camera {

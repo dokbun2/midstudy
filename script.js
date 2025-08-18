@@ -2,6 +2,7 @@
 
 // DOM Elements
 const basePromptInput = document.getElementById('base-prompt');
+const additionalPromptInput = document.getElementById('additional-prompt');
 const cameraMovementSelect = document.getElementById('camera-movement');
 const styleRefInput = document.getElementById('style-ref');
 const aspectRatioSelect = document.getElementById('aspect-ratio');
@@ -71,7 +72,7 @@ function attachEventListeners() {
     });
     
     // Real-time preview on input change
-    [basePromptInput, cameraMovementSelect, styleRefInput, aspectRatioSelect, additionalParamsInput].forEach(element => {
+    [basePromptInput, additionalPromptInput, cameraMovementSelect, styleRefInput, aspectRatioSelect, additionalParamsInput].forEach(element => {
         element.addEventListener('input', updatePreview);
     });
 }
@@ -79,6 +80,7 @@ function attachEventListeners() {
 // Generate Prompt Function
 function generatePrompt() {
     const basePrompt = basePromptInput.value.trim();
+    const additionalPrompt = additionalPromptInput.value.trim();
     
     if (!basePrompt) {
         showNotification('기본 프롬프트를 입력해주세요!', 'error');
@@ -87,6 +89,11 @@ function generatePrompt() {
     
     // Build the prompt
     let finalPrompt = basePrompt;
+    
+    // Add additional prompt if provided
+    if (additionalPrompt) {
+        finalPrompt = `${finalPrompt}, ${additionalPrompt}`;
+    }
     
     // Add camera movement if selected
     const cameraMovement = cameraMovementSelect.value;
@@ -151,6 +158,10 @@ function updatePreview() {
         components.push(`<span class="preview-block base">📝 ${basePromptInput.value.trim()}</span>`);
     }
     
+    if (additionalPromptInput.value.trim()) {
+        components.push(`<span class="preview-block additional">✨ ${additionalPromptInput.value.trim()}</span>`);
+    }
+    
     if (cameraMovementSelect.value) {
         components.push(`<span class="preview-block camera">🎥 ${cameraMovementSelect.value}</span>`);
     }
@@ -173,6 +184,7 @@ function updatePreview() {
 // Clear All Fields
 function clearAll() {
     basePromptInput.value = '';
+    additionalPromptInput.value = '';
     cameraMovementSelect.value = '';
     styleRefInput.value = '';
     aspectRatioSelect.value = '--ar 9:16';
