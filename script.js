@@ -6,6 +6,7 @@ const basePromptDropdown = document.getElementById('base-prompt-dropdown');
 const additionalPromptInput = document.getElementById('additional-prompt');
 const cameraMovementSelect = document.getElementById('camera-movement');
 const styleRefInput = document.getElementById('style-ref');
+const styleRefDropdown = document.getElementById('style-ref-dropdown');
 const aspectRatioSelect = document.getElementById('aspect-ratio');
 const additionalParamsInput = document.getElementById('additional-params');
 const generateBtn = document.getElementById('generate-btn');
@@ -14,7 +15,7 @@ const saveBtn = document.getElementById('save-btn');
 const copyBtn = document.getElementById('copy-btn');
 const outputDisplay = document.getElementById('output-display');
 const promptPreview = document.getElementById('prompt-preview');
-const savedPromptsList = document.getElementById('saved-prompts');
+// const savedPromptsList = document.getElementById('saved-prompts'); // No saved prompts list in current HTML
 
 // Preset Templates
 const presetTemplates = {
@@ -53,7 +54,7 @@ let savedPrompts = JSON.parse(localStorage.getItem('savedPrompts')) || [];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    displaySavedPrompts();
+    // displaySavedPrompts(); // Commented out as there's no display element
     attachEventListeners();
 });
 
@@ -78,6 +79,36 @@ function attachEventListeners() {
             }
             // Reset dropdown to default option
             basePromptDropdown.value = '';
+            // Trigger preview update
+            updatePreview();
+        }
+    });
+    
+    // Style reference dropdown handler
+    styleRefDropdown.addEventListener('change', (e) => {
+        const selectedValue = e.target.value;
+        if (selectedValue) {
+            const currentValue = styleRefInput.value.trim();
+            // Extract just the --sref number from selected value
+            const selectedSref = selectedValue.match(/--sref\s+(\d+)/)[1];
+            
+            if (currentValue) {
+                // Check if current value starts with --sref
+                if (currentValue.startsWith('--sref')) {
+                    // Extract existing numbers
+                    const existingNumbers = currentValue.replace('--sref', '').trim();
+                    // Add new number with comma
+                    styleRefInput.value = `--sref ${existingNumbers}, ${selectedSref}`;
+                } else {
+                    // Add to existing non-sref value
+                    styleRefInput.value = `${currentValue} ${selectedValue}`;
+                }
+            } else {
+                // Set as new value
+                styleRefInput.value = selectedValue;
+            }
+            // Reset dropdown to default option
+            styleRefDropdown.value = '';
             // Trigger preview update
             updatePreview();
         }
@@ -110,15 +141,15 @@ function generatePrompt() {
     // Build the prompt
     let finalPrompt = basePrompt;
     
-    // Add camera movement if selected (moved before additional prompt)
+    // Add additional prompt if provided (moved before camera movement)
+    if (additionalPrompt) {
+        finalPrompt = `${finalPrompt}, ${additionalPrompt}`;
+    }
+    
+    // Add camera movement if selected (moved after additional prompt)
     const cameraMovement = cameraMovementSelect.value;
     if (cameraMovement) {
         finalPrompt = `${finalPrompt}, ${cameraMovement}`;
-    }
-    
-    // Add additional prompt if provided (moved after camera movement)
-    if (additionalPrompt) {
-        finalPrompt = `${finalPrompt}, ${additionalPrompt}`;
     }
     
     // Add style reference if provided
@@ -178,12 +209,12 @@ function updatePreview() {
         components.push(`<span class="preview-block base">📝 ${basePromptInput.value.trim()}</span>`);
     }
     
-    if (cameraMovementSelect.value) {
-        components.push(`<span class="preview-block camera">🎥 ${cameraMovementSelect.value}</span>`);
-    }
-    
     if (additionalPromptInput.value.trim()) {
         components.push(`<span class="preview-block additional">✨ ${additionalPromptInput.value.trim()}</span>`);
+    }
+    
+    if (cameraMovementSelect.value) {
+        components.push(`<span class="preview-block camera">🎥 ${cameraMovementSelect.value}</span>`);
     }
     
     if (styleRefInput.value.trim()) {
@@ -208,6 +239,7 @@ function clearAll() {
     additionalPromptInput.value = '';
     cameraMovementSelect.value = '';
     styleRefInput.value = '';
+    styleRefDropdown.value = '';
     aspectRatioSelect.value = '--ar 9:16';
     additionalParamsInput.value = '';
     outputDisplay.innerHTML = '<p class="placeholder-text">Your generated prompt will appear here...</p>';
@@ -241,49 +273,16 @@ function savePrompt() {
     }
     
     localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
-    displaySavedPrompts();
+    // displaySavedPrompts(); // Commented out as there's no display element
     showNotification('프롬프트가 저장되었습니다!', 'success');
 }
 
 // Display Saved Prompts
 function displaySavedPrompts() {
-    if (savedPrompts.length === 0) {
-        savedPromptsList.innerHTML = '<p class="no-saved">저장된 프롬프트가 없습니다</p>';
-        return;
-    }
-    
-    savedPromptsList.innerHTML = savedPrompts.map(item => `
-        <div class="saved-item" data-id="${item.id}">
-            <div class="saved-item-content">
-                <p class="saved-name">${item.name}</p>
-                <p class="saved-time">${item.timestamp}</p>
-            </div>
-            <div class="saved-actions">
-                <button class="load-saved-btn" data-prompt="${encodeURIComponent(item.prompt)}">Load</button>
-                <button class="delete-saved-btn" data-id="${item.id}">×</button>
-            </div>
-        </div>
-    `).join('');
-    
-    // Attach event listeners to saved prompt buttons
-    document.querySelectorAll('.load-saved-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const prompt = decodeURIComponent(e.target.dataset.prompt);
-            displayPrompt(prompt);
-            copyBtn.disabled = false;
-            showNotification('저장된 프롬프트를 불러왔습니다!', 'success');
-        });
-    });
-    
-    document.querySelectorAll('.delete-saved-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const id = parseInt(e.target.dataset.id);
-            savedPrompts = savedPrompts.filter(item => item.id !== id);
-            localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
-            displaySavedPrompts();
-            showNotification('프롬프트가 삭제되었습니다!', 'info');
-        });
-    });
+    // Since there's no saved prompts list element in the current HTML,
+    // we'll just maintain the savedPrompts array for future use
+    // This function is kept for compatibility but won't display anything
+    console.log('Saved prompts:', savedPrompts);
 }
 
 // Load Preset
