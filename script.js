@@ -110,15 +110,15 @@ function generatePrompt() {
     // Build the prompt
     let finalPrompt = basePrompt;
     
-    // Add additional prompt if provided
-    if (additionalPrompt) {
-        finalPrompt = `${finalPrompt}, ${additionalPrompt}`;
-    }
-    
-    // Add camera movement if selected
+    // Add camera movement if selected (moved before additional prompt)
     const cameraMovement = cameraMovementSelect.value;
     if (cameraMovement) {
         finalPrompt = `${finalPrompt}, ${cameraMovement}`;
+    }
+    
+    // Add additional prompt if provided (moved after camera movement)
+    if (additionalPrompt) {
+        finalPrompt = `${finalPrompt}, ${additionalPrompt}`;
     }
     
     // Add style reference if provided
@@ -178,12 +178,12 @@ function updatePreview() {
         components.push(`<span class="preview-block base">📝 ${basePromptInput.value.trim()}</span>`);
     }
     
-    if (additionalPromptInput.value.trim()) {
-        components.push(`<span class="preview-block additional">✨ ${additionalPromptInput.value.trim()}</span>`);
-    }
-    
     if (cameraMovementSelect.value) {
         components.push(`<span class="preview-block camera">🎥 ${cameraMovementSelect.value}</span>`);
+    }
+    
+    if (additionalPromptInput.value.trim()) {
+        components.push(`<span class="preview-block additional">✨ ${additionalPromptInput.value.trim()}</span>`);
     }
     
     if (styleRefInput.value.trim()) {

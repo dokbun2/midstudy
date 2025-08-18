@@ -89,19 +89,25 @@
                                 </div>
                             </div>
 
-                            <!-- Additional Prompt Block -->
-                            <div class="prompt-block additional-prompt-block">
+                            <!-- Camera Movement Block -->
+                            <div class="prompt-block camera-block">
                                 <div class="block-header">
-                                    <span class="block-title">추가 프롬프트</span>
+                                    <span class="block-title">카메라 움직임</span>
                                 </div>
                                 <div class="block-content">
-                                    <input 
-                                        type="text" 
-                                        id="additional-prompt" 
-                                        class="text-input"
-                                        placeholder="추가 설명이나 디테일 (예: wearing a red dress, sunset lighting)"
-                                    />
-                                    <div class="helper-text">기본 프롬프트에 추가될 상세 설명</div>
+                                    <select id="camera-movement" class="select-input">
+                                        <option value="">없음 (None)</option>
+                                        <option value="pan right">오른쪽 팬 (Pan Right) →</option>
+                                        <option value="pan left">← 왼쪽 팬 (Pan Left)</option>
+                                        <option value="zoom in">줌 인 (Zoom In)</option>
+                                        <option value="zoom out">줌 아웃 (Zoom Out)</option>
+                                        <option value="tilt up">위로 틸트 (Tilt Up)</option>
+                                        <option value="tilt down">아래로 틸트 (Tilt Down)</option>
+                                        <option value="rotate clockwise">시계방향 회전 (Rotate Clockwise)</option>
+                                        <option value="rotate counter-clockwise">반시계방향 회전 (Rotate Counter)</option>
+                                        <option value="dolly in">돌리 인 (Dolly In)</option>
+                                        <option value="dolly out">돌리 아웃 (Dolly Out)</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -139,25 +145,19 @@
 
                         <!-- Right Column -->
                         <div class="grid-column">
-                            <!-- Camera Movement Block -->
-                            <div class="prompt-block camera-block">
+                            <!-- Additional Prompt Block -->
+                            <div class="prompt-block additional-prompt-block">
                                 <div class="block-header">
-                                    <span class="block-title">카메라 움직임</span>
+                                    <span class="block-title">추가 프롬프트</span>
                                 </div>
                                 <div class="block-content">
-                                    <select id="camera-movement" class="select-input">
-                                        <option value="">없음 (None)</option>
-                                        <option value="pan right">오른쪽 팬 (Pan Right) →</option>
-                                        <option value="pan left">← 왼쪽 팬 (Pan Left)</option>
-                                        <option value="zoom in">줌 인 (Zoom In)</option>
-                                        <option value="zoom out">줌 아웃 (Zoom Out)</option>
-                                        <option value="tilt up">위로 틸트 (Tilt Up)</option>
-                                        <option value="tilt down">아래로 틸트 (Tilt Down)</option>
-                                        <option value="rotate clockwise">시계방향 회전 (Rotate Clockwise)</option>
-                                        <option value="rotate counter-clockwise">반시계방향 회전 (Rotate Counter)</option>
-                                        <option value="dolly in">돌리 인 (Dolly In)</option>
-                                        <option value="dolly out">돌리 아웃 (Dolly Out)</option>
-                                    </select>
+                                    <input 
+                                        type="text" 
+                                        id="additional-prompt" 
+                                        class="text-input"
+                                        placeholder="추가 설명이나 디테일 (예: wearing a red dress, sunset lighting)"
+                                    />
+                                    <div class="helper-text">기본 프롬프트에 추가될 상세 설명</div>
                                 </div>
                             </div>
 
