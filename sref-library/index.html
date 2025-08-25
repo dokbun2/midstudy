@@ -3,174 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sref Library - 스타일 참조 라이브러리</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Sref Library - Style Reference Collection</title>
+    <link rel="stylesheet" href="styles-linear.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
+    <!-- Linear-style Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="../index.html" class="nav-back">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M10 12L6 8L10 4"/>
+                    </svg>
+                </a>
+                <div class="nav-divider"></div>
+                <h1 class="nav-title">Sref Library</h1>
+            </div>
+            
+            <div class="nav-center">
+                <div class="search-box">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="7" cy="7" r="5"/>
+                        <path d="M11 11L14 14"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="스타일 검색..." id="search-input">
+                    <kbd class="search-shortcut">⌘K</kbd>
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <button class="nav-btn" id="view-toggle">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="2" width="5" height="5"/>
+                        <rect x="9" y="2" width="5" height="5"/>
+                        <rect x="2" y="9" width="5" height="5"/>
+                        <rect x="9" y="9" width="5" height="5"/>
+                    </svg>
+                </button>
+                <button class="nav-btn" id="filter-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 4H14M4 8H12M6 12H10"/>
+                    </svg>
+                </button>
+                <button class="btn-primary" id="add-new-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M8 4V12M4 8H12"/>
+                    </svg>
+                    <span>새 스타일</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Header with Stats -->
+    <header class="header">
+        <div class="header-container">
             <div class="header-content">
-                <h1>🎨 Sref Library</h1>
-                <p class="subtitle">미드저니 스타일 참조 라이브러리</p>
+                <h2 class="header-title">스타일 컬렉션</h2>
+                <p class="header-description">Midjourney 스타일 레퍼런스를 관리하고 빠르게 액세스하세요</p>
             </div>
-            <div class="header-actions">
-                <button id="import-btn" class="action-btn">
-                    <span class="btn-icon">📥</span>
-                    Import JSON
-                </button>
-                <button id="export-btn" class="action-btn">
-                    <span class="btn-icon">📤</span>
-                    Export JSON
-                </button>
-                <input type="file" id="import-file" accept=".json" style="display: none;">
-            </div>
-        </header>
-
-        <div class="main-layout">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <div class="sidebar-header">
-                    <h3>카테고리</h3>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-styles">0</div>
+                    <div class="stat-label">전체 스타일</div>
                 </div>
-                <div class="category-list">
-                    <div class="category-item active" data-category="all">
-                        <span class="category-icon">📂</span>
-                        <span class="category-name">전체</span>
-                        <span class="category-count" id="count-all">0</span>
-                    </div>
-                    <div class="category-item" data-category="illustration">
-                        <span class="category-icon">🎨</span>
-                        <span class="category-name">일러스트</span>
-                        <span class="category-count" id="count-illustration">0</span>
-                    </div>
-                    <div class="category-item" data-category="cinematic">
-                        <span class="category-icon">🎬</span>
-                        <span class="category-name">시네마틱</span>
-                        <span class="category-count" id="count-cinematic">0</span>
-                    </div>
-                    <div class="category-item" data-category="painting">
-                        <span class="category-icon">🖼️</span>
-                        <span class="category-name">회화</span>
-                        <span class="category-count" id="count-painting">0</span>
-                    </div>
-                    <div class="category-item" data-category="modern">
-                        <span class="category-icon">✨</span>
-                        <span class="category-name">모던</span>
-                        <span class="category-count" id="count-modern">0</span>
-                    </div>
-                    <div class="category-item" data-category="vintage">
-                        <span class="category-icon">📷</span>
-                        <span class="category-name">빈티지</span>
-                        <span class="category-count" id="count-vintage">0</span>
-                    </div>
-                    <div class="category-item" data-category="anime">
-                        <span class="category-icon">🌸</span>
-                        <span class="category-name">애니메이션</span>
-                        <span class="category-count" id="count-anime">0</span>
-                    </div>
-                    <div class="category-item" data-category="realistic">
-                        <span class="category-icon">📸</span>
-                        <span class="category-name">사실적</span>
-                        <span class="category-count" id="count-realistic">0</span>
-                    </div>
-                    <div class="category-item" data-category="abstract">
-                        <span class="category-icon">🔷</span>
-                        <span class="category-name">추상</span>
-                        <span class="category-count" id="count-abstract">0</span>
-                    </div>
-                    <div class="category-item" data-category="other">
-                        <span class="category-icon">🔮</span>
-                        <span class="category-name">기타</span>
-                        <span class="category-count" id="count-other">0</span>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="recent-styles">0</div>
+                    <div class="stat-label">최근 추가</div>
                 </div>
-            </aside>
-
-            <!-- Main Content -->
-            <main class="main-content">
-                <!-- Control Bar -->
-                <div class="control-bar">
-                    <div class="control-left">
-                        <h2 id="current-category">전체 스타일</h2>
-                        <span class="item-count" id="total-count">0개 항목</span>
-                    </div>
-                    <div class="control-right">
-                        <button id="add-card-btn" class="primary-btn">
-                            <span class="btn-icon">➕</span>
-                            새 카드 추가
-                        </button>
-                        <button id="edit-mode-btn" class="secondary-btn">
-                            <span class="btn-icon">✏️</span>
-                            편집 모드
-                        </button>
-                        <button id="delete-mode-btn" class="danger-btn">
-                            <span class="btn-icon">🗑️</span>
-                            삭제 모드
-                        </button>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="categories-count">0</div>
+                    <div class="stat-label">카테고리</div>
                 </div>
-
-                <!-- Cards Grid -->
-                <div class="cards-grid" id="cards-container">
-                    <!-- Cards will be dynamically added here -->
-                </div>
-            </main>
-        </div>
-
-        <!-- Modal for Add/Edit Card -->
-        <div id="card-modal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="modal-title">새 카드 추가</h3>
-                    <button class="close-btn" id="close-modal">✕</button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="modal-image">이미지</label>
-                        <div class="image-upload-area">
-                            <input type="file" id="modal-image-input" accept="image/*" style="display: none;">
-                            <div id="image-preview" class="image-preview">
-                                <span class="upload-text">클릭하여 이미지 업로드</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="modal-category">카테고리</label>
-                        <select id="modal-category" class="form-input">
-                            <option value="illustration">일러스트</option>
-                            <option value="cinematic">시네마틱</option>
-                            <option value="painting">회화</option>
-                            <option value="modern">모던</option>
-                            <option value="vintage">빈티지</option>
-                            <option value="anime">애니메이션</option>
-                            <option value="realistic">사실적</option>
-                            <option value="abstract">추상</option>
-                            <option value="other">기타</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="modal-description">설명</label>
-                        <textarea id="modal-description" class="form-input" rows="3" placeholder="스타일에 대한 설명을 입력하세요"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="modal-sref">Sref 코드</label>
-                        <input type="text" id="modal-sref" class="form-input" placeholder="예: --sref 1234567890">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="cancel-modal" class="secondary-btn">취소</button>
-                    <button id="save-card" class="primary-btn">저장</button>
+                <div class="stat-card">
+                    <div class="stat-value" id="favorites-count">0</div>
+                    <div class="stat-label">즐겨찾기</div>
                 </div>
             </div>
         </div>
-
-        <!-- Toast Notification -->
-        <div id="toast" class="toast">
-            <span id="toast-message"></span>
+    </header>
+    
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">
+                    <span>전체</span>
+                    <span class="filter-count">0</span>
+                </button>
+                <button class="filter-tab" data-filter="illustration">
+                    <span>일러스트</span>
+                    <span class="filter-count">0</span>
+                </button>
+                <button class="filter-tab" data-filter="cinematic">
+                    <span>시네마틱</span>
+                    <span class="filter-count">0</span>
+                </button>
+                <button class="filter-tab" data-filter="painting">
+                    <span>회화</span>
+                    <span class="filter-count">0</span>
+                </button>
+                <button class="filter-tab" data-filter="modern">
+                    <span>모던</span>
+                    <span class="filter-count">0</span>
+                </button>
+                <button class="filter-tab" data-filter="vintage">
+                    <span>빈티지</span>
+                    <span class="filter-count">0</span>
+                </button>
+                <button class="filter-tab" data-filter="anime">
+                    <span>애니메이션</span>
+                    <span class="filter-count">0</span>
+                </button>
+                <button class="filter-tab" data-filter="realistic">
+                    <span>사실적</span>
+                    <span class="filter-count">0</span>
+                </button>
+                <button class="filter-tab" data-filter="favorites">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                        <path d="M7 1L9 5L13 6L10 9L11 13L7 11L3 13L4 9L1 6L5 5L7 1Z"/>
+                    </svg>
+                    <span>즐겨찾기</span>
+                    <span class="filter-count">0</span>
+                </button>
+            </div>
+            
+            <div class="filter-actions">
+                <!-- Layout Toggle Buttons -->
+                <div class="layout-toggle">
+                    <button class="layout-btn active" data-layout="landscape" title="가로 (16:9)">
+                        <svg width="20" height="12" viewBox="0 0 20 12" fill="currentColor">
+                            <rect x="0" y="0" width="20" height="12" rx="1"/>
+                        </svg>
+                    </button>
+                    <button class="layout-btn" data-layout="square" title="정사각형 (1:1)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <rect x="0" y="0" width="16" height="16" rx="1"/>
+                        </svg>
+                    </button>
+                    <button class="layout-btn" data-layout="portrait" title="세로 (9:16)">
+                        <svg width="12" height="20" viewBox="0 0 12 20" fill="currentColor">
+                            <rect x="0" y="0" width="12" height="20" rx="1"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <select class="sort-select" id="sort-select">
+                    <option value="recent">최신순</option>
+                    <option value="name">이름순</option>
+                    <option value="category">카테고리순</option>
+                    <option value="favorites">즐겨찾기순</option>
+                </select>
+            </div>
         </div>
     </div>
-
-    <script src="script.js"></script>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-container">
+            <!-- Style Cards Grid -->
+            <div class="cards-grid" id="cards-grid">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+            
+            <!-- Empty State -->
+            <div class="empty-state" id="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="8" y="8" width="32" height="32" rx="4"/>
+                        <path d="M16 20L24 28L32 20"/>
+                    </svg>
+                </div>
+                <h3 class="empty-title">스타일이 없습니다</h3>
+                <p class="empty-description">첫 번째 스타일 레퍼런스를 추가해보세요</p>
+                <button class="btn-primary" onclick="openModal()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M8 4V12M4 8H12"/>
+                    </svg>
+                    <span>스타일 추가</span>
+                </button>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modal -->
+    <div class="modal" id="style-modal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">새 스타일 추가</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 4L4 12M4 4L12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">이미지</label>
+                        <div class="image-upload" id="image-upload">
+                            <input type="file" id="image-input" accept="image/*" style="display: none;">
+                            <div class="upload-area" id="upload-area">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 8V16M8 12H16"/>
+                                    <rect x="3" y="3" width="18" height="18" rx="3"/>
+                                </svg>
+                                <span>이미지 업로드</span>
+                            </div>
+                            <img class="upload-preview" id="upload-preview" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-fields">
+                        <div class="form-group">
+                            <label class="form-label">Sref 코드</label>
+                            <input type="text" class="form-input" id="sref-input" placeholder="--sref 1234567890">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">카테고리</label>
+                            <select class="form-select" id="category-select">
+                                <option value="illustration">일러스트</option>
+                                <option value="cinematic">시네마틱</option>
+                                <option value="painting">회화</option>
+                                <option value="modern">모던</option>
+                                <option value="vintage">빈티지</option>
+                                <option value="anime">애니메이션</option>
+                                <option value="realistic">사실적</option>
+                                <option value="other">기타</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">설명</label>
+                            <textarea class="form-textarea" id="description-input" rows="3" placeholder="스타일에 대한 간단한 설명"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">태그</label>
+                            <input type="text" class="form-input" id="tags-input" placeholder="태그를 쉼표로 구분 (예: 다크, 무드, 시네마틱)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">취소</button>
+                <button class="btn-primary" id="save-btn" onclick="saveStyle()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 8L7 11L12 5"/>
+                    </svg>
+                    <span>저장</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <svg class="toast-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 8L7 11L12 5"/>
+            </svg>
+            <span class="toast-message" id="toast-message">저장되었습니다</span>
+        </div>
+    </div>
+    
+    <script src="script-linear.js"></script>
 </body>
 </html>

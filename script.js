@@ -15,7 +15,6 @@ const saveBtn = document.getElementById('save-btn');
 const copyBtn = document.getElementById('copy-btn');
 const outputDisplay = document.getElementById('output-display');
 const promptPreview = document.getElementById('prompt-preview');
-// const savedPromptsList = document.getElementById('saved-prompts'); // No saved prompts list in current HTML
 
 // Preset Templates
 const presetTemplates = {
@@ -54,8 +53,9 @@ let savedPrompts = JSON.parse(localStorage.getItem('savedPrompts')) || [];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    // displaySavedPrompts(); // Commented out as there's no display element
     attachEventListeners();
+    initAnimations();
+    checkScrollPosition();
 });
 
 // Event Listeners
@@ -135,6 +135,7 @@ function generatePrompt() {
     
     if (!basePrompt) {
         showNotification('기본 프롬프트를 입력해주세요!', 'error');
+        shakeElement(basePromptInput);
         return;
     }
     
@@ -182,11 +183,13 @@ function generatePrompt() {
     // Show success notification
     showNotification('프롬프트가 성공적으로 생성되었습니다!', 'success');
     
-    // Add animation
-    outputDisplay.classList.add('pulse-animation');
+    // Add smooth animation
+    outputDisplay.style.transform = 'scale(0.98)';
+    outputDisplay.style.opacity = '0.8';
     setTimeout(() => {
-        outputDisplay.classList.remove('pulse-animation');
-    }, 600);
+        outputDisplay.style.transform = 'scale(1)';
+        outputDisplay.style.opacity = '1';
+    }, 150);
 }
 
 // Display Prompt
@@ -273,16 +276,7 @@ function savePrompt() {
     }
     
     localStorage.setItem('savedPrompts', JSON.stringify(savedPrompts));
-    // displaySavedPrompts(); // Commented out as there's no display element
     showNotification('프롬프트가 저장되었습니다!', 'success');
-}
-
-// Display Saved Prompts
-function displaySavedPrompts() {
-    // Since there's no saved prompts list element in the current HTML,
-    // we'll just maintain the savedPrompts array for future use
-    // This function is kept for compatibility but won't display anything
-    console.log('Saved prompts:', savedPrompts);
 }
 
 // Load Preset
@@ -381,3 +375,78 @@ document.addEventListener('keydown', (e) => {
         clearAll();
     }
 });
+
+// Initialize animations
+function initAnimations() {
+    // Add intersection observer for fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+
+    // Observe all prompt blocks
+    document.querySelectorAll('.prompt-block').forEach((block, index) => {
+        block.style.opacity = '0';
+        block.style.transform = 'translateY(20px)';
+        block.style.transition = `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s`;
+        observer.observe(block);
+    });
+
+    // Add hover effects with smooth transitions
+    document.querySelectorAll('.prompt-block').forEach(block => {
+        block.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-4px) scale(1.01)';
+        });
+        block.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // Smooth focus transitions for inputs
+    document.querySelectorAll('input, select, textarea').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.01)';
+        });
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    });
+}
+
+// Shake animation for validation errors
+function shakeElement(element) {
+    element.style.animation = 'shake 0.5s';
+    setTimeout(() => {
+        element.style.animation = '';
+    }, 500);
+}
+
+// Add shake animation CSS dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+`;
+document.head.appendChild(style);
+
+// Header scroll effect
+function checkScrollPosition() {
+    const header = document.querySelector('.header');
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.style.background = 'rgba(255, 255, 255, 0.95)';
+            header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        } else {
+            header.style.background = 'rgba(255, 255, 255, 0.72)';
+            header.style.boxShadow = 'none';
+        }
+    });
+}
