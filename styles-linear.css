@@ -401,8 +401,10 @@ body {
 
 /* Builder Section */
 .builder-section {
+    position: relative;
     padding: calc(48px + var(--space-16)) var(--space-6) var(--space-16);
     background: var(--bg-primary);
+    z-index: 1;
 }
 
 .builder-container {
@@ -474,6 +476,7 @@ body {
     color: var(--text-primary);
     font-size: 14px;
     transition: all 0.2s;
+    position: relative;
 }
 
 .builder-input:focus,
@@ -498,12 +501,24 @@ body {
 /* Fix for select dropdown positioning */
 .builder-select:focus {
     position: relative;
-    z-index: 100;
+    z-index: 1000;
+}
+
+.builder-select option {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: var(--space-2);
 }
 
 .builder-card:has(.builder-select:focus) {
-    z-index: 50;
+    z-index: 500;
     overflow: visible;
+}
+
+/* Ensure dropdown appears above other elements */
+.builder-card:has(.builder-select:focus) ~ .builder-card {
+    position: relative;
+    z-index: 0;
 }
 
 /* Output Section */
