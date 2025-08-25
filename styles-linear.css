@@ -405,11 +405,13 @@ body {
     padding: calc(48px + var(--space-16)) var(--space-6) var(--space-16);
     background: var(--bg-primary);
     z-index: 1;
+    overflow: visible !important;
 }
 
 .builder-container {
     max-width: 1000px;
     margin: 0 auto;
+    overflow: visible !important;
 }
 
 .builder-header {
@@ -434,7 +436,8 @@ body {
     gap: var(--space-4);
     margin-bottom: var(--space-8);
     position: relative;
-    z-index: 1;
+    z-index: auto;
+    overflow: visible !important;
 }
 
 .builder-card {
@@ -444,8 +447,9 @@ body {
     border-radius: var(--radius-md);
     padding: var(--space-5);
     transition: all 0.2s;
-    overflow: visible;
-    z-index: 1;
+    overflow: visible !important;
+    z-index: auto;
+    min-height: 120px;
 }
 
 .builder-card:hover {
@@ -490,6 +494,7 @@ body {
     position: relative;
     cursor: pointer;
     -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M1 1L5 5L9 1' stroke='%239ca0a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
@@ -498,27 +503,80 @@ body {
     z-index: 10;
 }
 
+/* Enhanced Select Dropdown when Expanded */
+.builder-select.expanded {
+    position: absolute !important;
+    z-index: 99999 !important;
+    background: var(--bg-secondary) !important;
+    border: 2px solid var(--accent-purple) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
+    width: 100% !important;
+    max-height: 240px !important;
+    overflow-y: auto !important;
+    background-image: none !important;
+}
+
+.builder-select.expanded option {
+    padding: var(--space-3) !important;
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    cursor: pointer !important;
+}
+
+.builder-select.expanded option:hover,
+.builder-select.expanded option:checked {
+    background: var(--bg-tertiary) !important;
+    color: var(--accent-purple) !important;
+}
+
 /* Fix for select dropdown positioning */
 .builder-select:focus {
     position: relative;
-    z-index: 1000;
+    z-index: 10000 !important;
 }
 
+/* Style the dropdown options */
 .builder-select option {
     background: var(--bg-secondary);
     color: var(--text-primary);
     padding: var(--space-2);
+    font-size: 14px;
 }
 
+/* Focus state for cards with select */
 .builder-card:has(.builder-select:focus) {
-    z-index: 500;
-    overflow: visible;
+    z-index: 9999 !important;
+    overflow: visible !important;
+    position: relative;
 }
 
 /* Ensure dropdown appears above other elements */
 .builder-card:has(.builder-select:focus) ~ .builder-card {
     position: relative;
-    z-index: 0;
+    z-index: 1;
+}
+
+/* Specific dropdown enhancements */
+#base-prompt-dropdown,
+#style-ref-dropdown,
+#camera-movement,
+#aspect-ratio {
+    margin-top: var(--space-2);
+}
+
+/* Active card state when dropdown is expanded */
+.builder-card:has(.builder-select.expanded) {
+    z-index: 99999 !important;
+    position: relative !important;
+    overflow: visible !important;
+    min-height: 250px !important;
+    transition: all 0.2s ease;
+}
+
+/* Ensure other cards stay below */
+.builder-card:has(.builder-select.expanded) ~ .builder-card {
+    position: relative;
+    z-index: 1;
 }
 
 /* Output Section */

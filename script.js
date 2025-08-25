@@ -1,5 +1,63 @@
 // Midjourney Video Prompt Builder - JavaScript
 
+// Custom Dropdown Solution for Select Elements
+function enhanceSelectDropdowns() {
+    // Fix for all select dropdowns to prevent cutoff
+    const selects = document.querySelectorAll('.builder-select');
+    
+    selects.forEach(select => {
+        // Store original size
+        const originalSize = select.size || 1;
+        
+        // On focus, expand the select to show options
+        select.addEventListener('focus', function() {
+            // Calculate number of options (max 8 for visibility)
+            const optionCount = Math.min(this.options.length, 8);
+            this.size = optionCount;
+            
+            // Add class for styling
+            this.classList.add('expanded');
+            
+            // Ensure parent card has enough height
+            const card = this.closest('.builder-card');
+            if (card) {
+                card.style.minHeight = '250px';
+                card.style.zIndex = '9999';
+                card.style.overflow = 'visible';
+            }
+        });
+        
+        // On blur or change, collapse back
+        select.addEventListener('blur', function() {
+            setTimeout(() => {
+                this.size = originalSize;
+                this.classList.remove('expanded');
+                
+                // Reset parent card
+                const card = this.closest('.builder-card');
+                if (card) {
+                    card.style.minHeight = '';
+                    card.style.zIndex = '';
+                    card.style.overflow = '';
+                }
+            }, 200);
+        });
+        
+        select.addEventListener('change', function() {
+            this.size = originalSize;
+            this.classList.remove('expanded');
+            
+            // Reset parent card
+            const card = this.closest('.builder-card');
+            if (card) {
+                card.style.minHeight = '';
+                card.style.zIndex = '';
+                card.style.overflow = '';
+            }
+        });
+    });
+}
+
 // DOM Elements
 const basePromptInput = document.getElementById('base-prompt');
 const basePromptDropdown = document.getElementById('base-prompt-dropdown');
@@ -56,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     attachEventListeners();
     initAnimations();
     checkScrollPosition();
+    enhanceSelectDropdowns(); // Initialize custom dropdown enhancement
 });
 
 // Event Listeners

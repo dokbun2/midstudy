@@ -7,17 +7,20 @@ let currentSort = 'recent';
 let currentLayout = 'landscape'; // Default layout
 let editingId = null;
 
-// DOM Elements
-const cardsGrid = document.getElementById('cards-grid');
-const emptyState = document.getElementById('empty-state');
-const modal = document.getElementById('style-modal');
-const searchInput = document.getElementById('search-input');
-const sortSelect = document.getElementById('sort-select');
-const toast = document.getElementById('toast');
-const toastMessage = document.getElementById('toast-message');
+// DOM Elements - will be initialized after DOM loads
+let cardsGrid, emptyState, modal, searchInput, sortSelect, toast, toastMessage;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize DOM elements
+    cardsGrid = document.getElementById('cards-grid');
+    emptyState = document.getElementById('empty-state');
+    modal = document.getElementById('style-modal');
+    searchInput = document.getElementById('search-input');
+    sortSelect = document.getElementById('sort-select');
+    toast = document.getElementById('toast');
+    toastMessage = document.getElementById('toast-message');
+    
     loadStyles();
     
     // Restore saved layout preference
@@ -47,7 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // Event Listeners
 function initializeEventListeners() {
     // Add new style
-    document.getElementById('add-new-btn').addEventListener('click', openModal);
+    const addNewBtn = document.getElementById('add-new-btn');
+    if (addNewBtn) {
+        addNewBtn.addEventListener('click', () => openModal());
+    }
     
     // Filter tabs
     document.querySelectorAll('.filter-tab').forEach(tab => {
@@ -117,7 +123,8 @@ function initializeEventListeners() {
 }
 
 // Modal Functions
-function openModal(styleId = null) {
+window.openModal = function(styleId = null) {
+    const modal = document.getElementById('style-modal');
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
     
@@ -144,7 +151,8 @@ function openModal(styleId = null) {
     }
 }
 
-function closeModal() {
+window.closeModal = function() {
+    const modal = document.getElementById('style-modal');
     modal.classList.remove('active');
     document.body.style.overflow = '';
     editingId = null;
@@ -162,7 +170,7 @@ function resetModal() {
 }
 
 // Save Style
-function saveStyle() {
+window.saveStyle = function() {
     const sref = document.getElementById('sref-input').value.trim();
     const category = document.getElementById('category-select').value;
     const description = document.getElementById('description-input').value.trim();
@@ -209,7 +217,7 @@ function saveStyle() {
 }
 
 // Delete Style
-function deleteStyle(id) {
+window.deleteStyle = function(id) {
     if (confirm('이 스타일을 삭제하시겠습니까?')) {
         styles = styles.filter(s => s.id !== id);
         saveStyles();
@@ -220,7 +228,7 @@ function deleteStyle(id) {
 }
 
 // Toggle Favorite
-function toggleFavorite(id) {
+window.toggleFavorite = function(id) {
     const style = styles.find(s => s.id === id);
     if (style) {
         style.favorite = !style.favorite;
@@ -231,7 +239,7 @@ function toggleFavorite(id) {
 }
 
 // Copy Sref
-function copySref(sref) {
+window.copySref = function(sref) {
     navigator.clipboard.writeText(sref).then(() => {
         showToast('Sref 코드가 복사되었습니다');
     });
@@ -428,15 +436,25 @@ function loadStyles() {
 
 // Toast Notification
 function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    
+    if (!toast || !toastMessage) {
+        console.error('Toast elements not found');
+        return;
+    }
+    
     toastMessage.textContent = message;
     
     const icon = toast.querySelector('.toast-icon');
-    if (type === 'error') {
-        icon.innerHTML = '<path d="M12 4L4 12M4 4L12 12"/>';
-        icon.style.color = 'var(--accent-red)';
-    } else {
-        icon.innerHTML = '<path d="M4 8L7 11L12 5"/>';
-        icon.style.color = 'var(--accent-green)';
+    if (icon) {
+        if (type === 'error') {
+            icon.innerHTML = '<path d="M12 4L4 12M4 4L12 12"/>';
+            icon.style.color = 'var(--accent-red)';
+        } else {
+            icon.innerHTML = '<path d="M4 8L7 11L12 5"/>';
+            icon.style.color = 'var(--accent-green)';
+        }
     }
     
     toast.classList.add('active');
