@@ -12,6 +12,11 @@ let cardsGrid, emptyState, modal, searchInput, sortSelect, toast, toastMessage;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+    
     // Initialize DOM elements
     cardsGrid = document.getElementById('cards-grid');
     emptyState = document.getElementById('empty-state');
@@ -37,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     renderStyles();
-    updateStats();
     initializeEventListeners();
     updateGridLayout();
     
@@ -49,6 +53,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Event Listeners
 function initializeEventListeners() {
+    // Upload/Download functionality
+    const downloadBtn = document.getElementById('download-btn');
+    const uploadBtn = document.getElementById('upload-btn');
+    const uploadInput = document.getElementById('upload-input');
+    
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', exportLibrary);
+    }
+    
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', () => {
+            uploadInput.click();
+        });
+    }
+    
+    if (uploadInput) {
+        uploadInput.addEventListener('change', importLibrary);
+    }
     // Add new style
     const addNewBtn = document.getElementById('add-new-btn');
     if (addNewBtn) {
@@ -212,7 +234,6 @@ window.saveStyle = function() {
     
     saveStyles();
     renderStyles();
-    updateStats();
     closeModal();
 }
 
@@ -222,7 +243,6 @@ window.deleteStyle = function(id) {
         styles = styles.filter(s => s.id !== id);
         saveStyles();
         renderStyles();
-        updateStats();
         showToast('스타일이 삭제되었습니다');
     }
 }
@@ -234,7 +254,6 @@ window.toggleFavorite = function(id) {
         style.favorite = !style.favorite;
         saveStyles();
         renderStyles();
-        updateStats();
     }
 }
 
@@ -302,18 +321,11 @@ function renderStyles() {
                     ${style.image ? 
                         `<img src="${style.image}" alt="${style.sref}">` :
                         `<div style="display: flex; align-items: center; justify-content: center; height: 100%; background: var(--bg-tertiary); color: var(--text-quaternary);">
-                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <rect x="8" y="8" width="32" height="32" rx="4"/>
-                                <circle cx="18" cy="18" r="3"/>
-                                <path d="M8 32L20 20L32 32"/>
-                                <path d="M28 28L36 20L44 28"/>
-                            </svg>
+                            <i data-lucide="image" class="icon-48"></i>
                         </div>`
                     }
                     <button class="card-favorite ${style.favorite ? 'active' : ''}" onclick="toggleFavorite('${style.id}')">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="${style.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.5">
-                            <path d="M8 2L10 6L14 7L11 10L12 14L8 12L4 14L5 10L2 7L6 6L8 2Z"/>
-                        </svg>
+                        <i data-lucide="star" class="icon-16" ${style.favorite ? 'data-fill="true"' : ''}></i>
                     </button>
                 </div>
                 <div class="card-content">
@@ -331,28 +343,26 @@ function renderStyles() {
                     ` : ''}
                     <div class="card-actions">
                         <button class="card-action" onclick="copySref('${style.sref}')">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" style="display: inline-block; margin-right: 4px;">
-                                <rect x="4" y="4" width="8" height="8" rx="1"/>
-                                <path d="M2 2H8V2C8 2 8 2 8 2V8"/>
-                            </svg>
+                            <i data-lucide="copy" class="icon-14" style="display: inline-block; margin-right: 4px;"></i>
                             복사
                         </button>
                         <button class="card-action" onclick="openModal('${style.id}')">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" style="display: inline-block; margin-right: 4px;">
-                                <path d="M10 2L12 4L5 11L2 12L3 9L10 2Z"/>
-                            </svg>
+                            <i data-lucide="edit-2" class="icon-14" style="display: inline-block; margin-right: 4px;"></i>
                             편집
                         </button>
                         <button class="card-action" onclick="deleteStyle('${style.id}')">
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" style="display: inline-block; margin-right: 4px;">
-                                <path d="M4 4L10 10M10 4L4 10"/>
-                            </svg>
+                            <i data-lucide="trash-2" class="icon-14" style="display: inline-block; margin-right: 4px;"></i>
                             삭제
                         </button>
                     </div>
                 </div>
             </div>
         `).join('');
+        
+        // Re-initialize Lucide icons for dynamically added content
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
 }
 
@@ -372,17 +382,6 @@ function updateGridLayout() {
     localStorage.setItem('preferredLayout', currentLayout);
 }
 
-// Update Stats
-function updateStats() {
-    document.getElementById('total-styles').textContent = styles.length;
-    document.getElementById('recent-styles').textContent = styles.filter(s => 
-        Date.now() - s.createdAt < 7 * 24 * 60 * 60 * 1000
-    ).length;
-    document.getElementById('categories-count').textContent = 
-        [...new Set(styles.map(s => s.category))].length;
-    document.getElementById('favorites-count').textContent = 
-        styles.filter(s => s.favorite).length;
-}
 
 // Update Filter Counts
 function updateFilterCounts() {
@@ -524,10 +523,85 @@ function addSampleStyles() {
     updateStats();
 }
 
+// Export Library to JSON
+function exportLibrary() {
+    const exportData = {
+        version: '1.0',
+        exportDate: new Date().toISOString(),
+        totalStyles: styles.length,
+        styles: styles
+    };
+    
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = `sref-library-backup-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    
+    showToast(`라이브러리가 다운로드되었습니다 (${styles.length}개 스타일)`, 'success');
+}
+
+// Import Library from JSON
+function importLibrary(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importData = JSON.parse(e.target.result);
+            
+            // Validate the imported data
+            if (!importData.styles || !Array.isArray(importData.styles)) {
+                throw new Error('잘못된 파일 형식입니다.');
+            }
+            
+            // Ask user if they want to merge or replace
+            const shouldMerge = confirm(
+                `${importData.styles.length}개의 스타일을 발견했습니다.\n\n` +
+                `현재 라이브러리와 병합하시겠습니까?\n` +
+                `(취소: 전체 교체, 확인: 병합)`
+            );
+            
+            if (shouldMerge) {
+                // Merge with existing styles (avoid duplicates based on sref)
+                const existingSrefs = new Set(styles.map(s => s.sref));
+                const newStyles = importData.styles.filter(style => 
+                    !existingSrefs.has(style.sref)
+                );
+                
+                styles = [...styles, ...newStyles];
+                showToast(`${newStyles.length}개의 새 스타일이 추가되었습니다`, 'success');
+            } else {
+                // Replace all styles
+                styles = importData.styles;
+                showToast(`라이브러리가 교체되었습니다 (${styles.length}개 스타일)`, 'success');
+            }
+            
+            saveStyles();
+            renderStyles();
+            updateStats();
+            
+        } catch (error) {
+            console.error('Import error:', error);
+            showToast('파일을 읽는 중 오류가 발생했습니다: ' + error.message, 'error');
+        }
+        
+        // Reset the input
+        event.target.value = '';
+    };
+    
+    reader.readAsText(file);
+}
+
 // Make functions globally accessible
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.saveStyle = saveStyle;
 window.deleteStyle = deleteStyle;
 window.toggleFavorite = toggleFavorite;
+window.exportLibrary = exportLibrary;
+window.importLibrary = importLibrary;
 window.copySref = copySref;

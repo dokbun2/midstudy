@@ -94,8 +94,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--space-6);
-    max-width: 1000px;
+    padding: 0 var(--space-8);
+    max-width: 1280px;
     margin: 0 auto;
 }
 
@@ -409,8 +409,9 @@ body {
 }
 
 .builder-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 var(--space-6);
     overflow: visible !important;
 }
 
@@ -581,13 +582,14 @@ body {
 
 /* Output Section */
 .output-section {
-    padding: var(--space-10) var(--space-6);
+    padding: var(--space-10) 0;
     background: var(--bg-secondary);
 }
 
 .output-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 var(--space-6);
 }
 
 .output-card {

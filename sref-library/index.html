@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sref Library - Style Reference Collection</title>
     <link rel="stylesheet" href="styles-linear.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 <body>
     <!-- Linear-style Navigation -->
@@ -12,9 +14,7 @@
         <div class="nav-container">
             <div class="nav-left">
                 <a href="../index.html" class="nav-back">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M10 12L6 8L10 4"/>
-                    </svg>
+                    <i data-lucide="chevron-left" class="icon-16"></i>
                 </a>
                 <div class="nav-divider"></div>
                 <h1 class="nav-title">Sref Library</h1>
@@ -22,67 +22,28 @@
             
             <div class="nav-center">
                 <div class="search-box">
-                    <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <circle cx="7" cy="7" r="5"/>
-                        <path d="M11 11L14 14"/>
-                    </svg>
+                    <i data-lucide="search" class="search-icon icon-16"></i>
                     <input type="text" class="search-input" placeholder="스타일 검색..." id="search-input">
                     <kbd class="search-shortcut">⌘K</kbd>
                 </div>
             </div>
             
             <div class="nav-right">
-                <button class="nav-btn" id="view-toggle">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="2" y="2" width="5" height="5"/>
-                        <rect x="9" y="2" width="5" height="5"/>
-                        <rect x="2" y="9" width="5" height="5"/>
-                        <rect x="9" y="9" width="5" height="5"/>
-                    </svg>
+                <button class="nav-btn" id="download-btn" title="라이브러리 다운로드 (JSON)">
+                    <i data-lucide="download" class="icon-16"></i>
                 </button>
-                <button class="nav-btn" id="filter-btn">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M2 4H14M4 8H12M6 12H10"/>
-                    </svg>
+                <button class="nav-btn" id="upload-btn" title="라이브러리 업로드 (JSON)">
+                    <i data-lucide="upload" class="icon-16"></i>
                 </button>
+                <input type="file" id="upload-input" accept=".json" style="display: none;">
                 <button class="btn-primary" id="add-new-btn">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M8 4V12M4 8H12"/>
-                    </svg>
+                    <i data-lucide="plus" class="icon-16"></i>
                     <span>새 스타일</span>
                 </button>
             </div>
         </div>
     </nav>
     
-    <!-- Header with Stats -->
-    <header class="header">
-        <div class="header-container">
-            <div class="header-content">
-                <h2 class="header-title">스타일 컬렉션</h2>
-                <p class="header-description">Midjourney 스타일 레퍼런스를 관리하고 빠르게 액세스하세요</p>
-            </div>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="total-styles">0</div>
-                    <div class="stat-label">전체 스타일</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="recent-styles">0</div>
-                    <div class="stat-label">최근 추가</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="categories-count">0</div>
-                    <div class="stat-label">카테고리</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="favorites-count">0</div>
-                    <div class="stat-label">즐겨찾기</div>
-                </div>
-            </div>
-        </div>
-    </header>
     
     <!-- Filter Bar -->
     <div class="filter-bar">
@@ -121,9 +82,7 @@
                     <span class="filter-count">0</span>
                 </button>
                 <button class="filter-tab" data-filter="favorites">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
-                        <path d="M7 1L9 5L13 6L10 9L11 13L7 11L3 13L4 9L1 6L5 5L7 1Z"/>
-                    </svg>
+                    <i data-lucide="star" class="icon-14"></i>
                     <span>즐겨찾기</span>
                     <span class="filter-count">0</span>
                 </button>
@@ -170,17 +129,12 @@
             <!-- Empty State -->
             <div class="empty-state" id="empty-state" style="display: none;">
                 <div class="empty-icon">
-                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="8" y="8" width="32" height="32" rx="4"/>
-                        <path d="M16 20L24 28L32 20"/>
-                    </svg>
+                    <i data-lucide="image" class="icon-48"></i>
                 </div>
                 <h3 class="empty-title">스타일이 없습니다</h3>
                 <p class="empty-description">첫 번째 스타일 레퍼런스를 추가해보세요</p>
                 <button class="btn-primary" onclick="openModal()">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M8 4V12M4 8H12"/>
-                    </svg>
+                    <i data-lucide="plus" class="icon-16"></i>
                     <span>스타일 추가</span>
                 </button>
             </div>
@@ -194,9 +148,7 @@
             <div class="modal-header">
                 <h3 class="modal-title" id="modal-title">새 스타일 추가</h3>
                 <button class="modal-close" onclick="closeModal()">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M12 4L4 12M4 4L12 12"/>
-                    </svg>
+                    <i data-lucide="x" class="icon-16"></i>
                 </button>
             </div>
             
@@ -207,10 +159,7 @@
                         <div class="image-upload" id="image-upload">
                             <input type="file" id="image-input" accept="image/*" style="display: none;">
                             <div class="upload-area" id="upload-area">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M12 8V16M8 12H16"/>
-                                    <rect x="3" y="3" width="18" height="18" rx="3"/>
-                                </svg>
+                                <i data-lucide="image-plus" class="icon-24"></i>
                                 <span>이미지 업로드</span>
                             </div>
                             <img class="upload-preview" id="upload-preview" style="display: none;">
@@ -253,9 +202,7 @@
             <div class="modal-footer">
                 <button class="btn-secondary" onclick="closeModal()">취소</button>
                 <button class="btn-primary" onclick="saveStyle()">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M4 8L7 11L12 5"/>
-                    </svg>
+                    <i data-lucide="check" class="icon-16"></i>
                     <span>저장</span>
                 </button>
             </div>
@@ -265,9 +212,7 @@
     <!-- Toast Notification -->
     <div class="toast" id="toast">
         <div class="toast-content">
-            <svg class="toast-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M4 8L7 11L12 5"/>
-            </svg>
+            <i data-lucide="check-circle" class="toast-icon icon-16"></i>
             <span class="toast-message" id="toast-message">저장되었습니다</span>
         </div>
     </div>
