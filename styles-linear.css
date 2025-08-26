@@ -198,6 +198,18 @@ body {
     border-color: var(--border-strong);
 }
 
+.btn-home {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+    margin-right: var(--space-2);
+}
+
+.btn-home:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-strong);
+}
+
 .btn-library {
     background: var(--accent-purple);
     color: white;
