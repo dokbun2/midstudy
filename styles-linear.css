@@ -504,57 +504,31 @@ body {
     z-index: 10;
 }
 
-/* Enhanced Select Dropdown when Expanded */
-.builder-select.expanded {
-    position: absolute !important;
-    z-index: 99999 !important;
-    background: var(--bg-secondary) !important;
-    border: 2px solid var(--accent-purple) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6) !important;
-    width: 100% !important;
-    max-height: 240px !important;
-    overflow-y: auto !important;
-    background-image: none !important;
-}
-
-.builder-select.expanded option {
-    padding: var(--space-3) !important;
-    background: var(--bg-secondary) !important;
-    color: var(--text-primary) !important;
-    cursor: pointer !important;
-}
-
-.builder-select.expanded option:hover,
-.builder-select.expanded option:checked {
-    background: var(--bg-tertiary) !important;
-    color: var(--accent-purple) !important;
-}
-
-/* Fix for select dropdown positioning */
+/* Clean Select Dropdown Styling */
 .builder-select:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
     position: relative;
-    z-index: 10000 !important;
+    z-index: 100;
 }
 
 /* Style the dropdown options */
 .builder-select option {
     background: var(--bg-secondary);
     color: var(--text-primary);
-    padding: var(--space-2);
+    padding: 8px 12px;
     font-size: 14px;
 }
 
-/* Focus state for cards with select */
-.builder-card:has(.builder-select:focus) {
-    z-index: 9999 !important;
-    overflow: visible !important;
-    position: relative;
+.builder-select option:checked {
+    background: var(--bg-tertiary);
 }
 
-/* Ensure dropdown appears above other elements */
-.builder-card:has(.builder-select:focus) ~ .builder-card {
+/* Focus state for cards with select */
+.builder-card.select-focused {
+    z-index: 50;
     position: relative;
-    z-index: 1;
 }
 
 /* Specific dropdown enhancements */
@@ -563,21 +537,6 @@ body {
 #camera-movement,
 #aspect-ratio {
     margin-top: var(--space-2);
-}
-
-/* Active card state when dropdown is expanded */
-.builder-card:has(.builder-select.expanded) {
-    z-index: 99999 !important;
-    position: relative !important;
-    overflow: visible !important;
-    min-height: 250px !important;
-    transition: all 0.2s ease;
-}
-
-/* Ensure other cards stay below */
-.builder-card:has(.builder-select.expanded) ~ .builder-card {
-    position: relative;
-    z-index: 1;
 }
 
 /* Output Section */
